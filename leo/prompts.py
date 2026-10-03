@@ -38,7 +38,7 @@ ROLES = {
 TASKS = {
     "coordinator": (
         "Student request: '{topic}'. Preferred level: {level}. Previous topics: {history}. "
-        "Resolve vague follow-ups such as 'tell me more' using the previous topics. If the request is clear and educational, set is_clear=true, rewrite the topic, "
+        "Resolve vague follow-ups such as 'tell me more' using the previous topics. If the request is clear and educational, set is_clear=true, rewrite the topic as a short title of at most 6 words, "
         "and list 3 to 5 focus_points. Otherwise set is_clear=false and write one clarification."
     ),
     "explainer": (
@@ -46,12 +46,12 @@ TASKS = {
         "Write a lesson in Markdown under 250 words with an analogy and a mini example."
     ),
     "quiz_master": (
-        "Using only this lesson: {lesson}. Create {n} multiple choice questions about "
+        "Using only the lesson written in the previous task, create {n} multiple choice questions about "
         "the topic '{topic}'. Return structured output."
     ),
     "evaluator": (
-        "Quiz with correct answers: {quiz}. Student answers (option index per question): "
-        "{answers}. Score already computed: {score} percent. Write feedback per question, "
+        "Quiz with correct answers: {quiz}. Student answers with the correct option for each question: "
+        "{answers}. Never mention option indexes or numbers, refer to the option text. Score already computed: {score} percent. Write feedback per question, "
         "list weak_topics, and add a short encouragement."
     ),
 }

@@ -108,6 +108,7 @@ section[data-testid="stSidebar"]{background:rgba(255,255,255,.4)}
 @keyframes glow{50%{box-shadow:0 0 60px rgba(125,211,252,.95),0 0 110px rgba(226,232,240,.75),inset 0 0 36px rgba(186,230,253,.7)}}
 @keyframes bm{0%,100%{opacity:.2}50%{opacity:1}}
 @keyframes pl{50%{opacity:.55;filter:brightness(1.6)}}
+.bars{display:flex;align-items:flex-end;gap:6px;height:120px;padding:10px;border-radius:16px;background:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.7)}.bar{flex:1;height:100%;position:relative;display:flex;align-items:flex-end;justify-content:center}.bar i{position:absolute;bottom:16px;left:0;right:0;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#a855f7,#22d3ee)}.bar span{font:700 .65rem 'Space Mono',monospace;color:#0b1530}
 </style>""", unsafe_allow_html=True)
 if LOGO.exists():
     logo_b64 = base64.b64encode(LOGO.read_bytes()).decode()
@@ -128,6 +129,7 @@ label,label p,[data-testid="stMarkdownContainer"] p,[data-testid="stMarkdownCont
 button p{color:#fff!important}
 section[data-testid="stSidebar"]{background:rgba(255,255,255,.34)}
 .stApp{background:linear-gradient(120deg,#3c9a0f,#66bd24 55%,#a5ef4e)!important}
+.bar i{background:linear-gradient(180deg,#4ade80,#15803d)}
 """
 if st.sidebar.toggle("🌿 Green mode", key="green"):
     css = GREEN_CSS
@@ -196,10 +198,13 @@ def on_step(agent: str, msg: str) -> None:
 tracker()
 
 st.sidebar.title("🦁 Leo control room")
-st.sidebar.caption(f"Student: {S.mem.name}  |  Topics: {S.mem.history_text()}")
+last = S.mem.topics[-1] if S.mem.topics else "none"
+st.sidebar.caption(f"Student: {S.mem.name} | Topics learned: {len(S.mem.topics)} | Last: {last[:40]}")
 if scores:
     st.sidebar.markdown("**Score history**")
-    st.sidebar.bar_chart(scores)
+    bars = "".join(f'<div class="bar"><i style="height:calc((100% - 16px) * {max(s, 4) / 100:.2f})"></i><span>{s:.0f}</span></div>'
+                   for s in scores[-8:])
+    st.sidebar.markdown(f'<div class="bars">{bars}</div>', unsafe_allow_html=True)
 with st.sidebar.expander("🔗 Handoff log", expanded=True):
     for line in S.get("log", [])[-8:]:
         st.caption(line)
