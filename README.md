@@ -14,7 +14,7 @@
 
 <div align="center">
 
-**Demo video:** https://drive.google.com/file/d/1SlFeOE5V49sGy6oD2Kl-J1ZH1145Ow5d/view?usp=sharing
+**🔗 Demo video:** https://drive.google.com/file/d/1SlFeOE5V49sGy6oD2Kl-J1ZH1145Ow5d/view?usp=sharing
 
 </div>
 
