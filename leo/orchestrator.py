@@ -2,6 +2,7 @@
 import json
 import logging
 import os
+import re
 import time
 from dataclasses import dataclass
 from typing import Callable
@@ -17,6 +18,19 @@ log = logging.getLogger("leo")
 PASS_MARK = 60.0
 Step = Callable[[str, str], None]
 JSON_RULE = " Reply with ONLY one valid JSON object that matches this JSON schema, no markdown fences: {schema}"
+
+
+VAGUE = re.compile(
+    r"^(please )?(teach|tell|show|help|explain)( me)?( something| anything| stuff| a topic)?$"
+    r"|^(something|anything|stuff|random|surprise me|i want to learn( something)?|learn something|hi|hello|hey)$")
+CLARIFY = ("Which subject would you like to learn? For example: 'What is machine learning?', "
+           "'How does a decision tree work?' or 'How does backpropagation work?'")
+
+
+def is_vague(text: str) -> bool:
+    """The Coordinator's first check: a request with no subject is never guessed."""
+    t = re.sub(r"\s+", " ", re.sub(r"[^a-z0-9\s]", "", text.lower())).strip()
+    return not t or bool(VAGUE.match(t))
 
 
 class LeoError(Exception):
@@ -153,6 +167,8 @@ def teach(name: str, topic: str, level: str, history: str = "none",
     """Phase 1: Coordinator, then Explainer and Quiz Master. Returns a clarification str if unclear."""
     step = on_step or (lambda *_: None)
     step("Coordinator", "Validating request and planning")
+    if is_vague(topic):
+        return CLARIFY
     plan: Plan = _guarded("coordinator", dict(name=name, topic=topic, level=level, history=history), Plan)
     if not plan.is_clear:
         return plan.clarification or "Could you tell me a little more about the topic?"

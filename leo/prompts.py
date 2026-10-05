@@ -38,20 +38,20 @@ ROLES = {
 TASKS = {
     "coordinator": (
         "Student request: '{topic}'. Preferred level: {level}. Previous topics: {history}. "
-        "Resolve vague follow-ups such as 'tell me more' using the previous topics. If the request is clear and educational, set is_clear=true, rewrite the topic as a short title of at most 6 words, "
+        "Resolve vague follow-ups such as 'tell me more' using the previous topics. A request is clear only if it names a specific subject. If it is vague, for example 'teach me something', set is_clear=false and ask which subject; never choose a topic for the student. If the request is clear and educational, set is_clear=true, rewrite the topic as a short title of at most 6 words, "
         "and list 3 to 5 focus_points. Otherwise set is_clear=false and write one clarification."
     ),
     "explainer": (
         "Teach this plan: {plan}. Weak areas to stress (may be empty): {weak}. Reference material (may be 'none'): {context}. When reference material exists, teach only from it. "
-        "Write a lesson in Markdown under 250 words with an analogy and a mini example."
+        "Write a lesson in Markdown under 250 words with an analogy and a mini example. Use $...$ only for math. Never use a dollar sign for money, write amounts like 'USD 200k'."
     ),
     "quiz_master": (
         "Using only the lesson written in the previous task, create {n} multiple choice questions about "
-        "the topic '{topic}'. Return structured output."
+        "the topic '{topic}'. Return structured output. Use $...$ only for math. Never use a dollar sign for money, write amounts like 'USD 200k'."
     ),
     "evaluator": (
         "Quiz with correct answers: {quiz}. Student answers with the correct option for each question: "
         "{answers}. Never mention option indexes or numbers, refer to the option text. Score already computed: {score} percent. Write feedback per question, "
-        "list weak_topics, and add a short encouragement."
+        "list weak_topics, and add a short encouragement. Use $...$ only for math. Never use a dollar sign for money, write amounts like 'USD 200k'."
     ),
 }

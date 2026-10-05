@@ -81,3 +81,11 @@ def test_retry_fails_fast_on_quota(monkeypatch):
     with pytest.raises(o.LeoError):
         o._retry("x", fn)
     assert len(calls) == 1
+
+
+def test_vague_requests_are_not_guessed():
+    from leo.orchestrator import is_vague
+    for text in ["Teach me something", "teach me something!", "help", "Hello", "  ", "Tell me anything", "surprise me"]:
+        assert is_vague(text), text
+    for text in ["What is machine learning?", "backpropagation", "tell me more", "How does a decision tree work?"]:
+        assert not is_vague(text), text

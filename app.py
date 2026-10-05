@@ -239,6 +239,8 @@ def begin(topic: str, level: str, weak: str = "") -> None:
         st.error(f"Coordinator: {exc}")
         return
     if isinstance(out, str):
+        S.done, S.active = ["Coordinator"], ""
+        tracker()
         st.warning(f"🧭 Coordinator needs more detail: {out}")
         return
     S.lesson, S.stage, S.done, S.active = out, "quiz", list(AGENTS)[:3], ""
